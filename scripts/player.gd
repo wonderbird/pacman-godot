@@ -2,8 +2,10 @@ extends Area2D
 
 @export var speed = 400
 
+var screen_size
+
 func _ready():
-	pass
+	screen_size = get_viewport_rect().size
 
 func _process(delta):
 	var velocity = Vector2.ZERO
@@ -18,5 +20,9 @@ func _process(delta):
 	
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
+	
+	var left_top = Vector2($CollisionShape2D.shape.radius, $CollisionShape2D.shape.radius)
+	var bottom_right = screen_size - left_top
+	position = position.clamp(left_top, bottom_right)
 	position += velocity * delta
 	
